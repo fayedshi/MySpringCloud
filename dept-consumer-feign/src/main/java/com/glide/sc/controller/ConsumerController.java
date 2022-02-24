@@ -37,4 +37,10 @@ public class ConsumerController {
     public List<Dept> list() {
         return service.list();
     }
+
+
+    @GetMapping(value = "consumer/dept/discovery")
+    public Object discovery() {
+        return service.discovery();
+    }
 }

@@ -23,4 +23,7 @@ public interface DeptClientService {
     @GetMapping(value = "/dept/list")
     public List<Dept> list();
 
+    @GetMapping(value = "/dept/discovery")
+    public Object discovery();
+
 }

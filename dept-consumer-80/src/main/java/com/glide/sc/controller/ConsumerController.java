@@ -2,10 +2,12 @@ package com.glide.sc.controller;
 
 import com.glide.sc.models.Dept;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.List;
 /**
  * @auther zzyy
@@ -20,8 +22,8 @@ import java.util.List;
 public class ConsumerController {
     private String serviceUrl = "http://CLOUD-DEPT-SERVICE";
 
-//    @Resource
-//    private DiscoveryClient discoveryClient;
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     RestTemplate template;
@@ -41,5 +43,10 @@ public class ConsumerController {
     @GetMapping(value = "consumer/dept/list")
     public List<Dept> listDepts() {
         return template.getForEntity(serviceUrl + "/dept/list/", List.class).getBody();
+    }
+
+    @GetMapping(value = "consumer/dept/discovery")
+    public Object discovery() {
+        return template.getForEntity(serviceUrl + "/dept/discovery/", Object.class).getBody();
     }
 }

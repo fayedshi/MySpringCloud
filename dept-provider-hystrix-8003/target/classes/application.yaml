@@ -1,5 +1,5 @@
 server:
-  port: 8002
+  port: 8003
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
@@ -19,8 +19,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:7001/eureka/
-#      , http://localhost:7002/eureka/
+      defaultZone: http://localhost:7001/eureka/, http://localhost:7002/eureka/
   instance:
-    instance-id: microservice-Dept8002
+    instance-id: hystrix-dept8003
     prefer-ip-address: true

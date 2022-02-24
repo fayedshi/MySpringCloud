@@ -13,8 +13,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 @EnableCircuitBreaker
 //@EnableDiscoveryClient
-public class ProviderMain8003 {
+public class ProviderHystrix8003 {
     public static void main(String[] args) {
-        SpringApplication.run(ProviderMain8003.class, args);
+        SpringApplication.run(ProviderHystrix8003.class, args);
     }
 }
