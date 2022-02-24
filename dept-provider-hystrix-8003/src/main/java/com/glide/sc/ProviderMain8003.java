@@ -2,9 +2,8 @@ package com.glide.sc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.cloud.netflix.ribbon.RibbonClient;
 
 /**
  * @auther zzyy
@@ -12,9 +11,10 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
  */
 @SpringBootApplication
 @EnableEurekaClient
-@EnableDiscoveryClient
-public class ConsumerMain80 {
+@EnableCircuitBreaker
+//@EnableDiscoveryClient
+public class ProviderMain8003 {
     public static void main(String[] args) {
-        SpringApplication.run(ConsumerMain80.class, args);
+        SpringApplication.run(ProviderMain8003.class, args);
     }
 }

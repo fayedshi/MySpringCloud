@@ -36,13 +36,18 @@ public class DeptController {
     @GetMapping(value = "/dept/get/{id}")
     public Dept getDeptById(@PathVariable("id") Long id) {
         Dept dept = deptService.get(id);
-
+        log.info("get method of provider 8002");
         return dept;
     }
 
     @GetMapping(value = "/dept/list")
     public List<Dept> listDepts() {
         return deptService.list();
+    }
+
+    @GetMapping(value = "/dept/lb")
+    public String getDeptLB() {
+        return serverPort;
     }
 
 //    @GetMapping(value = "/dept/discovery")

@@ -28,7 +28,7 @@ public class DeptController {
     @RequestMapping(value = "/dept/create")
     public boolean create(Dept dept) {
        deptService.add(dept);
-//        log.info("*****插入结果：" + result);
+        log.info("*****插入结果：" + true);
 
         return true;
     }
@@ -36,13 +36,18 @@ public class DeptController {
     @GetMapping(value = "/dept/get/{id}")
     public Dept getDeptById(@PathVariable("id") Long id) {
         Dept dept = deptService.get(id);
-
+        log.info("get method of provider 8001");
         return dept;
     }
 
     @GetMapping(value = "/dept/list")
     public List<Dept> listDepts() {
         return deptService.list();
+    }
+
+    @GetMapping(value = "/dept/lb")
+    public String getDeptLB() {
+        return serverPort;
     }
 
 //    @GetMapping(value = "/dept/discovery")
