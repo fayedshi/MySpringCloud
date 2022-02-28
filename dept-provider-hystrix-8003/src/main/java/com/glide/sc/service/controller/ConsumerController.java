@@ -1,4 +1,4 @@
-package com.glide.sc.controller;
+package com.glide.sc.service.controller;
 
 import com.glide.sc.models.Dept;
 import org.springframework.beans.factory.annotation.Autowired;

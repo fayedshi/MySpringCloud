@@ -12,7 +12,7 @@ import java.util.List;
  * @auther zzyy
  * @create 2020-02-18 10:40
  */
-@FeignClient(value = "CLOUD-DEPT-SERVICE")
+@FeignClient(value = "CLOUD-DEPT-SERVICE", fallbackFactory = DeptFallbackFactory.class)
 public interface DeptClientService {
     @RequestMapping(value = "/dept/create")
     public boolean add(Dept dept);
@@ -26,4 +26,7 @@ public interface DeptClientService {
     @GetMapping(value = "/dept/discovery")
     public Object discovery();
 
+
+    @GetMapping(value = "/dept/lb")
+    public String getLB();
 }

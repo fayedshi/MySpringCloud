@@ -6,6 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @auther zzyy
@@ -13,8 +14,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication
 @EnableEurekaClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.glide.sc")
 //@EnableDiscoveryClient
+@ComponentScan(basePackages = "com.glide.sc")
 public class ConsumerFeign {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerFeign.class, args);

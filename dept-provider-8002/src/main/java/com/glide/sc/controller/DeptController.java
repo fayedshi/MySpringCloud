@@ -26,7 +26,7 @@ public class DeptController {
 //    private DiscoveryClient discoveryClient;
 
     @RequestMapping(value = "/dept/create")
-    public boolean create(Dept dept) {
+    public boolean create(@RequestBody Dept dept) {
        deptService.add(dept);
 //        log.info("*****插入结果：" + result);
 
@@ -65,10 +65,8 @@ public class DeptController {
 //        return this.discoveryClient;
 //    }
 //
-//    @GetMapping(value = "/dept/lb")
-//    public String getDeptLB() {
-//        return serverPort;
-//    }
+
+
 //
 //    @GetMapping(value = "/dept/feign/timeout")
 //    public String deptFeignTimeout() {

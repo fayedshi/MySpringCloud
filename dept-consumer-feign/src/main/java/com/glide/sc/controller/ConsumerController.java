@@ -43,4 +43,10 @@ public class ConsumerController {
     public Object discovery() {
         return service.discovery();
     }
+
+
+    @GetMapping(value = "consumer/dept/lb")
+    public String getLB() {
+        return service.getLB();
+    }
 }

@@ -33,19 +33,21 @@ public class DeptController {
     private String serverPort;
 
     @GetMapping(value = "/dept/get/{id}")
-    @HystrixCommand(fallbackMethod = "hysHandler")
-    public Dept getDeptById(@PathVariable("id") Long id) {
+//    @HystrixCommand(fallbackMethod = "hysHandler")
+    public Dept getDeptById(@PathVariable("id") Long id) throws Exception {
         try {
             Dept dept = deptService.get(id);
+            if(dept==null)
+                throw new Exception("hell");
             return dept;
         } catch (Exception e) {
             throw e;
         }
     }
 
-    public Dept hysHandler(Long id) {
-        return new Dept().setDeptName("no dept exists");
-    }
+//    public Dept hysHandler(Long id) {
+//        return new Dept().setDeptName("no dept exists");
+//    }
 
     @GetMapping(value = "/dept/discovery")
     public Object discovery() {
