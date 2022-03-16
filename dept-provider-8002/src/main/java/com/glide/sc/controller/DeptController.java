@@ -1,6 +1,6 @@
 package com.glide.sc.controller;
 
-import com.glide.sc.models.Dept;
+import com.glide.springcloud.models.Dept;
 import com.glide.sc.service.DeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

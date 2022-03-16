@@ -1,7 +1,7 @@
 package com.glide.sc.service.impl;
 
 import com.glide.sc.dao.DeptDao;
-import com.glide.sc.models.Dept;
+import com.glide.springcloud.models.Dept;
 import com.glide.sc.service.DeptService;
 import org.springframework.stereotype.Service;
 

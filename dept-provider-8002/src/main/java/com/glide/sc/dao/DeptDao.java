@@ -1,6 +1,6 @@
 package com.glide.sc.dao;
 
-import com.glide.sc.models.Dept;
+import com.glide.springcloud.models.Dept;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

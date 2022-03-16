@@ -1,6 +1,6 @@
 package com.glide.sc.controller;
 
-import com.glide.sc.models.Dept;
+import com.glide.springcloud.models.Dept;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;

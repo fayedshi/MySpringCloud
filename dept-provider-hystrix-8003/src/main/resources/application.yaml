@@ -3,7 +3,7 @@ server:
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
-  type-aliases-package: com.glide.sc.models    # 所有Entity别名类所在包
+  type-aliases-package: com.glide.springcloud.models    # 所有Entity别名类所在包
 
 
 spring:

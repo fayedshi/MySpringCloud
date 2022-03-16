@@ -1,8 +1,7 @@
 package com.glide.sc.controller;
 
-import com.glide.sc.models.Dept;
+import com.glide.springcloud.models.Dept;
 import com.glide.sc.service.DeptService;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -32,8 +31,7 @@ public class DeptController {
     @Value("${server.port}")
     private String serverPort;
 
-    @GetMapping(value = "/dept/get/{id}")
-//    @HystrixCommand(fallbackMethod = "hysHandler")
+    @RequestMapping(value = "/dept/get/{id}")
     public Dept getDeptById(@PathVariable("id") Long id) throws Exception {
         try {
             Dept dept = deptService.get(id);
