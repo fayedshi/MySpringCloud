@@ -12,3 +12,10 @@ eureka:
   instance:
     instance-id: microservice-zuul-8977
     prefer-ip-address: true
+
+zuul:
+  prefix: /fbi
+  ignored-services: cloud-dept-service
+  routes:
+    mydept.serviceId: cloud-dept-service
+    mydept.path: /mydept/**
