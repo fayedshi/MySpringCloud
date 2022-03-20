@@ -34,8 +34,8 @@ public class DeptController {
     }
 
     @GetMapping(value = "/dept/get/{id}")
-    public Dept getDeptById(@PathVariable("id") Long id) {
-        Dept dept = deptService.get(id);
+    public Object getDeptById(@PathVariable("id") Long id) {
+        Object dept = deptService.get(id);
         log.info("get method of provider 8002");
         return dept;
     }

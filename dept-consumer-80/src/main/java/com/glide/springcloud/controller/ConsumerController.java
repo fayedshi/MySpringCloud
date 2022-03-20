@@ -32,24 +32,24 @@ public class ConsumerController {
     @Autowired
     RestTemplate template;
 
-    @RequestMapping(value = "consumer/dept/create")
+    @RequestMapping(value = "/consumer/dept/create")
     public Boolean add(Dept dept) {
         return template.postForEntity(serviceUrl + "/dept/create/", dept, Boolean.class).getBody();
 //        log.info("*****插入结果："+result);
 
     }
 
-    @GetMapping(value = "consumer/dept/get/{id}")
+    @GetMapping(value = "/consumer/dept/get/{id}")
     public ResponseEntity<Dept> get(@PathVariable("id") Long id) {
         return template.getForEntity(serviceUrl + "/dept/get/" + id, Dept.class);
     }
 
-    @GetMapping(value = "consumer/dept/list")
+    @GetMapping(value = "/consumer/dept/list")
     public List<Dept> listDepts() {
         return template.getForEntity(serviceUrl + "/dept/list/", List.class).getBody();
     }
 
-    @GetMapping(value = "consumer/dept/discovery")
+    @GetMapping(value = "/consumer/dept/discovery")
     public Object discovery() {
         return template.getForEntity(serviceUrl + "/dept/discovery/", Object.class).getBody();
     }

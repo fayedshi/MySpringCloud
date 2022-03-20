@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.glide.springcloud.dao.DeptDao">
-    <select id="listDepts" resultType="com.glide.springcloud.models.Dept">
+    <select id="listDepts" resultType="Dept">
         select * from dept;
     </select>
-    <select id="getDeptById" resultType="com.glide.springcloud.models.Dept" parameterType="Long">
+    <select id="getDeptById" resultType="Dept" parameterType="Long">
         select id,deptName,deptMgr from dept where id=#{id};
     </select>
-    <select id="addDept"  parameterType="com.glide.springcloud.models.Dept">
+    <select id="addDept"  parameterType="Dept">
         insert into dept(deptName,deptMgr) values(#{deptName}, #{deptMgr});
     </select>
 

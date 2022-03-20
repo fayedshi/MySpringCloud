@@ -8,7 +8,7 @@
     <select id="getDeptById" resultType="com.glide.springcloud.models.Dept" parameterType="Long">
         select id,deptName,deptMgr from dept where id=#{id};
     </select>
-    <select id="addDept"  parameterType="com.glide.springcloud.modelsDept">
+    <select id="addDept"  parameterType="com.glide.springcloud.models.Dept">
         insert into dept(deptName,deptMgr) values(#{deptName}, #{deptMgr});
     </select>
 

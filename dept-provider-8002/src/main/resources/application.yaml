@@ -3,7 +3,7 @@ server:
 
 mybatis:
   mapperLocations: classpath:mapper/*.xml
-  type-aliases-package: com.glide.sc.models    # 所有Entity别名类所在包
+  type-aliases-package: com.glide.springcloud.models    # 所有Entity别名类所在包
 
 
 spring:
@@ -16,11 +16,24 @@ spring:
     username: root
     password: 123456
 
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 1000
+    jedis:
+      pool:
+        min-idle: 5
+        max-idle: 10
+        max-wait: -1
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:7001/eureka/
-#      , http://localhost:7002/eureka/
+      defaultZone: http://localhost:7001/eureka/, http://localhost:7002/eureka/
   instance:
     instance-id: microservice-Dept8002
     prefer-ip-address: true
+
+logging:
+  level:
+    com.glide.springcloud: debug
