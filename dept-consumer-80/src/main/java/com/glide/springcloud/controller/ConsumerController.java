@@ -21,36 +21,37 @@ import java.util.List;
 
 // consumer doesn't need any service or doesn't care about how the service is provided.
 
-//originally access thru http://localhost:81/consumer/dept/get/1
+// call consumer  http://localhost:81/consumer/dept/get/1
 
 public class ConsumerController {
-    private String serviceUrl = "http://CLOUD-DEPT-SERVICE";
+    // original http://localhost:8001
+    private String serviceUrl = "http://cloud-dept-service";
 
     @Resource
     private DiscoveryClient discoveryClient;
 
     @Autowired
-    RestTemplate template;
+    RestTemplate restTemplate;
 
     @RequestMapping(value = "/consumer/dept/create")
     public Boolean add(Dept dept) {
-        return template.postForEntity(serviceUrl + "/dept/create/", dept, Boolean.class).getBody();
+        return restTemplate.postForEntity(serviceUrl + "/dept/create/", dept, Boolean.class).getBody();
 //        log.info("*****插入结果："+result);
 
     }
 
     @GetMapping(value = "/consumer/dept/get/{id}")
     public ResponseEntity<Dept> get(@PathVariable("id") Long id) {
-        return template.getForEntity(serviceUrl + "/dept/get/" + id, Dept.class);
+        return restTemplate.getForEntity(serviceUrl + "/dept/get/" + id, Dept.class);
     }
 
     @GetMapping(value = "/consumer/dept/list")
     public List<Dept> listDepts() {
-        return template.getForEntity(serviceUrl + "/dept/list/", List.class).getBody();
+        return restTemplate.getForEntity(serviceUrl + "/dept/list/", List.class).getBody();
     }
 
     @GetMapping(value = "/consumer/dept/discovery")
     public Object discovery() {
-        return template.getForEntity(serviceUrl + "/dept/discovery/", Object.class).getBody();
+        return restTemplate.getForEntity(serviceUrl + "/dept/discovery/", Object.class).getBody();
     }
 }

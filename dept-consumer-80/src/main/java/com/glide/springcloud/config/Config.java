@@ -10,7 +10,8 @@ public class Config {
 
     @Bean
     @LoadBalanced
-    public RestTemplate getRestTemplate(){
+    // marked in client side, it decides which service instance to call dynamically
+    public RestTemplate getRestTemplate() {
         return new RestTemplate();
     }
 }

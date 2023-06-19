@@ -4,11 +4,8 @@ server:
 spring:
   application:
     name: cloud-consumer-service
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:7001/eureka/, http://localhost:7002/eureka/
-  instance:
-    instance-id: microservice-consumer-81
-    prefer-ip-address: true
+  cloud:
+    zookeeper:
+      connect-string: 8.139.4.236:3181
+      connectionTimeout: 20000
+      max-retries: 10
