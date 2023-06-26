@@ -11,17 +11,17 @@
     <packaging>jar</packaging>
 
 
-<!--    <dependencyManagement>-->
-<!--        <dependencies>-->
-<!--            <dependency>&lt;!&ndash; 引入自己定义的api通用包，可以使用Payment支付Entity &ndash;&gt;-->
-<!--                <groupId>com.glide.springcloud</groupId>-->
-<!--                <artifactId>microservicecloud</artifactId>-->
-<!--                <version>${project.version}</version>-->
-<!--                <type>pom</type>-->
-<!--                <scope>import</scope>-->
-<!--            </dependency>-->
-<!--        </dependencies>-->
-<!--    </dependencyManagement>-->
+    <!--    <dependencyManagement>-->
+    <!--        <dependencies>-->
+    <!--            <dependency>&lt;!&ndash; 引入自己定义的api通用包，可以使用Payment支付Entity &ndash;&gt;-->
+    <!--                <groupId>com.glide.springcloud</groupId>-->
+    <!--                <artifactId>microservicecloud</artifactId>-->
+    <!--                <version>${project.version}</version>-->
+    <!--                <type>pom</type>-->
+    <!--                <scope>import</scope>-->
+    <!--            </dependency>-->
+    <!--        </dependencies>-->
+    <!--    </dependencyManagement>-->
 
     <dependencies>
         <dependency><!-- 引入自己定义的api通用包，可以使用Payment支付Entity -->
@@ -31,11 +31,11 @@
         </dependency>
 
         <!--eureka-client -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--            <version>2.2.1.RELEASE</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.cloud</groupId>-->
+        <!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+        <!--            <version>2.2.1.RELEASE</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -65,12 +65,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -81,27 +75,42 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
 <!--        <dependency>-->
-<!--            <groupId>com.101tec</groupId>-->
-<!--            <artifactId>zkclient</artifactId>-->
+<!--            <groupId>org.springframework.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>-->
+<!--            &lt;!&ndash; exclude ribbon to use spring cloud loadbalancer &ndash;&gt;-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.cloud</groupId>-->
+<!--                    <artifactId>spring-cloud-netflix-ribbon</artifactId>-->
+<!--                </exclusion>-->
+<!--                <exclusion>-->
+<!--                    <groupId>org.springframework.cloud</groupId>-->
+<!--                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
 <!--        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-            <!--先排除starter自带的zookeeper防止与3.4.9起冲突-->
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.zookeeper</groupId>
-                    <artifactId>zookeeper</artifactId>
-                </exclusion>
-            </exclusions>
-            <version>4.0.0</version>
-        </dependency>
-        <!-- zookeeper server version should sync with that in docker -->
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-            <version>3.7.0</version>
-        </dependency>
+
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.6.7</version>
+<!--                <configuration>-->
+<!--                    <mainClass>com.glide.springcloud.ProviderMain8001</mainClass>-->
+<!--                </configuration>-->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

@@ -12,9 +12,12 @@ spring:
   #, 8.139.4.236:2182, 8.139.4.236:2183
   cloud:
     zookeeper:
-      connect-string: 8.139.4.236:3181, 8.139.4.236:2182, 8.139.4.236:2183
+      connect-string: 8.139.4.236:2181, 8.139.4.236:2182, 8.139.4.236:2183
       connectionTimeout: 20000
       max-retries: 10
+      discovery:
+        prefer-ip-address: true
+        instance-id: ${spring.cloud.client.ip-address}:${server.port}
 
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型

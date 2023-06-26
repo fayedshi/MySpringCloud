@@ -13,7 +13,7 @@
         <module>dept-provider-8002</module>
         <module>dept-consumer-feign</module>
         <module>dept-provider-hystrix-8003</module>
-        <module>cloud-zuul-gateway</module>
+        <module>cloud-gateway</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
@@ -49,11 +49,6 @@
                 <scope>import</scope>
             </dependency>
             <!--spring cloud alibaba 2.1.0.RELEASE-->
-            <dependency>
-                <groupId>com.101tec</groupId>
-                <artifactId>zkclient</artifactId>
-                <version>0.11</version>
-            </dependency>
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -99,26 +94,45 @@
                 <optional>true</optional>
                 <version>2.2.3.RELEASE</version>
             </dependency>
-
-            <!-- SpringBoot整合zookeeper客户端 -->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
-                <!--先排除自带的zookeeper3.5.3 防止与3.4.9起冲突-->
-<!--                <exclusions>-->
-<!--                    <exclusion>-->
-<!--                        <groupId>org.apache.zookeeper</groupId>-->
-<!--                        <artifactId>zookeeper</artifactId>-->
-<!--                    </exclusion>-->
-<!--                </exclusions>-->
-            </dependency>
             <dependency>
                 <groupId>org.apache.zookeeper</groupId>
                 <artifactId>zookeeper</artifactId>
-                <version>3.7.0</version>
+                <version>3.5.6</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-zookeeper-discovery</artifactId>
+            <!-- exclude ribbon to use spring cloud loadbalancer -->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-netflix-ribbon</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>2.6.7</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>repackage</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
 
-
+<!--    </build>-->
 </project>

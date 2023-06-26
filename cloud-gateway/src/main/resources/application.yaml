@@ -1,0 +1,33 @@
+server:
+  port: 8977
+
+spring:
+  application:
+    name: cloud-zuul-service
+
+  cloud:
+    zookeeper:
+      connect-string: 8.139.4.236:2181, 8.139.4.236:2182, 8.139.4.236:2183
+      connectionTimeout: 20000
+      max-retries: 10
+
+    gateway:
+#      routes:
+#        - id: cloud-dept-service
+#          uri: lb://cloud-dept-service #  can be service name
+#          predicates:
+#            - Path=/dept/** # will be appended to uri
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+#zuul:
+##  prefix: /fbi
+##  ignored-services: cloud-dept-service // ban the specified service
+#  routes:
+#    mydept.serviceId: cloud-dept-service
+#    mydept.path: /cloud-dept-service/**
+
+# cloud-dept-service = localhost:8001
+# originally access localhost:8001/dept/list
+# with route: localhost:8977/cloud-dept-service/dept/list

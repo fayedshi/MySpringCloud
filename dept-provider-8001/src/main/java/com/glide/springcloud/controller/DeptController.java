@@ -59,9 +59,9 @@ public class DeptController {
             log.info("*****element: "+element);
         }
 
-        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-Dept-SERVICE");
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-dept-service");
         for (ServiceInstance instance : instances) {
-            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort()+"\t"+instance.getUri());
+            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort());
         }
 
         return this.discoveryClient;

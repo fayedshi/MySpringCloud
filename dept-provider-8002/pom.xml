@@ -9,33 +9,12 @@
     </parent>
     <artifactId>dept-provider-8002</artifactId>
     <packaging>jar</packaging>
-
-
-    <!--    <dependencyManagement>-->
-    <!--        <dependencies>-->
-    <!--            <dependency>&lt;!&ndash; 引入自己定义的api通用包，可以使用Payment支付Entity &ndash;&gt;-->
-    <!--                <groupId>com.glide.springcloud</groupId>-->
-    <!--                <artifactId>microservicecloud</artifactId>-->
-    <!--                <version>${project.version}</version>-->
-    <!--                <type>pom</type>-->
-    <!--                <scope>import</scope>-->
-    <!--            </dependency>-->
-    <!--        </dependencies>-->
-    <!--    </dependencyManagement>-->
-
     <dependencies>
         <dependency><!-- 引入自己定义的api通用包，可以使用Payment支付Entity -->
             <groupId>com.glide.springcloud</groupId>
             <artifactId>microservicecloud-api</artifactId>
             <version>${project.version}</version>
         </dependency>
-
-<!--        eureka-client -->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-<!--            <version>2.2.5.RELEASE</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
