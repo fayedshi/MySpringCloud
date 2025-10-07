@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface DeptService
 {
-    public void add(Dept Dept);
-    public Dept get(@Param("id") Long id);
-    public List<Dept> list();
+    void add(Dept Dept);
+    Dept get(@Param("id") Long id);
+    List<Dept> list();
 }

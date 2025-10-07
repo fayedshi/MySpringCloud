@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface DeptDao
 {
-    public Dept getDeptById(@Param("id") Long id);
-    public List<Dept> listDepts();
-    public void addDept(Dept dept);
+    Dept getDeptById(@Param("id") Long id);
+    List<Dept> listDepts();
+    void addDept(Dept dept);
 }

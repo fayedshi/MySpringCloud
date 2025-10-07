@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Accessors(chain=true)
 public class Dept implements Serializable {
 
-	private long id;
+	private Long id;
 	private String deptName;
 	private String deptMgr;
 	

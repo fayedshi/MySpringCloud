@@ -1,6 +1,7 @@
 package com.glide.springcloud.controller;
 
 import com.glide.springcloud.models.Dept;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
+//import javax.annotation.Resource;
 import java.util.List;
 
 /**

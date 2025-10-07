@@ -2,6 +2,7 @@ package com.glide.springcloud.controller;
 
 import com.glide.springcloud.models.Dept;
 import com.glide.springcloud.service.DeptService;
+//import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -15,7 +16,9 @@ import java.util.List;
  * @auther zzyy
  * @create 2020-02-18 10:43
  */
+
 @RestController
+@RequestMapping("/dept")
 @Slf4j
 public class DeptController {
     @Resource
@@ -27,7 +30,7 @@ public class DeptController {
     @Resource
     private DiscoveryClient discoveryClient;
 
-    @RequestMapping(value = "/dept/create")
+    @RequestMapping(value = "/create")
     public boolean create(@RequestBody Dept dept) {
        deptService.add(dept);
         log.info("*****插入结果：" + true);
@@ -35,24 +38,24 @@ public class DeptController {
         return true;
     }
 
-    @GetMapping(value = "/dept/get/{id}")
+    @GetMapping(value = "/get/{id}")
     public Dept getDeptById(@PathVariable("id") Long id) {
         Dept dept = deptService.get(id);
         log.info("get method of provider 8001");
         return dept;
     }
 
-    @GetMapping(value = "/dept/list")
+    @GetMapping(value = "/list")
     public List<Dept> listDepts() {
         return deptService.list();
     }
 
-    @GetMapping(value = "/dept/lb")
+    @GetMapping(value = "/lb")
     public String getDeptLB() {
         return serverPort;
     }
 
-    @GetMapping(value = "/dept/discovery")
+    @GetMapping(value = "/discovery")
     public Object discovery() {
         List<String> services = discoveryClient.getServices();
         for (String element : services) {
