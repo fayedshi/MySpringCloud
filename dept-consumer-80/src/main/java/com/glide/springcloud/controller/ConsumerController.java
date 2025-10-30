@@ -3,6 +3,8 @@ package com.glide.springcloud.controller;
 import com.glide.springcloud.models.Dept;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-//import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class ConsumerController {
     // original http://localhost:8001
-    private String serviceUrl = "http://cloud-dept-service";
+    private String serviceUrl = "http://dept-provider";
 
     @Resource
     private DiscoveryClient discoveryClient;
@@ -48,11 +49,13 @@ public class ConsumerController {
 
     @GetMapping(value = "/consumer/dept/list")
     public List<Dept> listDepts() {
-        return restTemplate.getForEntity(serviceUrl + "/dept/list/", List.class).getBody();
+        return restTemplate.getForEntity(serviceUrl + "/dept/list", List.class).getBody();
     }
 
     @GetMapping(value = "/consumer/dept/discovery")
     public Object discovery() {
-        return restTemplate.getForEntity(serviceUrl + "/dept/discovery/", Object.class).getBody();
+        List<ServiceInstance> instances= discoveryClient.getInstances("dept-provider");
+        System.out.println("---------------"+instances);
+        return restTemplate.getForEntity(instances.get(0) + "/dept/discovery/", Object.class).getBody();
     }
 }

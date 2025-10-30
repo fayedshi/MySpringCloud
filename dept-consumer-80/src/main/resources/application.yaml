@@ -6,6 +6,17 @@ spring:
   application:
     name: cloud-consumer-service
   cloud:
+    inetutils:
+      preferred-networks: 127.0.0.1
+    nacos:
+      discovery:
+        server-addr: http://10.0.0.7:8848
+        group: CloudDept
+      config:
+#        server-addr: http://10.0.0.7:8848
+#        file-extension: yaml
+#        group: CloudDept
+        import-check.enabled: false
     #, 8.139.4.236:2182, 8.139.4.236:2183
 #    zookeeper:
 #      connect-string: 8.139.4.236:2181, 8.139.4.236:2182, 8.139.4.236:2183

@@ -11,9 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @create 2020-02-17 21:13
  */
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.glide.springcloud")
+@EnableFeignClients
 @EnableDiscoveryClient
-@ComponentScan(basePackages = "com.glide.springcloud")
 public class ConsumerFeign {
     public static void main(String[] args) {
         SpringApplication.run(ConsumerFeign.class, args);

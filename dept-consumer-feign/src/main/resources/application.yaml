@@ -8,19 +8,27 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+    nacos:
+      discovery:
+        server-addr: http://10.0.0.7:8848
+        group: CloudDept
+      config:
+        server-addr: http://10.0.0.7:8848
+        file-extension: yaml
+        group: CloudDept
+        import-check.enabled: false
 
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: health
-  health:
-    ratelimiters:
-      enabled: true
-
+#management:
+#  endpoint:
+#    health:
+#      show-details: always
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health
+#  health:
+#    ratelimiters:
+#      enabled: true
 
 resilience4j:
   circuitbreaker:

@@ -3,7 +3,9 @@ package com.glide.springcloud.controller;
 import com.glide.springcloud.models.Dept;
 import com.glide.springcloud.service.DeptClientService;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,8 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/consumer")
 public class ConsumerController {
-//    @Resource
-//    private DiscoveryClient discoveryClient;
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     DeptClientService service;

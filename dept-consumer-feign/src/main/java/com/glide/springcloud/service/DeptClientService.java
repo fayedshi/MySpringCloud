@@ -13,7 +13,7 @@ import java.util.List;
  * @create 2020-02-18 10:40
  */
 //@Component
-@FeignClient(name = "dept-provider", url = "http://localhost:8001", fallback = MyFallbackService.class)
+@FeignClient(value = "dept-provider", fallback = MyFallbackService.class)
 public interface DeptClientService {
 
     @RequestMapping(value = "/dept/create")

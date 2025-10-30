@@ -16,7 +16,7 @@ public class Dept implements Serializable {
 	private String deptName;
 	private String deptMgr;
 	
-	public static void main(String args[]) {
+	public static void main(String[] args) {
 		System.out.print("here");
 		
 		
