@@ -2,7 +2,6 @@ package com.glide.springcloud.controller;
 
 import com.glide.springcloud.models.Dept;
 import com.glide.springcloud.service.DeptService;
-//import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
@@ -10,6 +9,8 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 /**
@@ -26,6 +27,9 @@ public class DeptController {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @Value("${spring.application.name}")
+    private String appName;
 
     @Resource
     private DiscoveryClient discoveryClient;
@@ -51,39 +55,20 @@ public class DeptController {
     }
 
     @GetMapping(value = "/lb")
-    public String getDeptLB() {
-        return serverPort;
+    public String getDeptLB() throws UnknownHostException {
+        InetAddress address = InetAddress.getLocalHost();
+        return address.getHostAddress();
     }
 
     @GetMapping(value = "/discovery")
-    public Object discovery() {
+    public List<ServiceInstance> discovery() {
         List<String> services = discoveryClient.getServices();
         for (String element : services) {
             log.info("*****element: "+element);
         }
-
-        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-dept-service");
-        for (ServiceInstance instance : instances) {
-            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort());
-        }
-
-        return this.discoveryClient;
-    }
-
-//
-//    @GetMapping(value = "/dept/feign/timeout")
-//    public String deptFeignTimeout() {
-//        // 业务逻辑处理正确，但是需要耗费3秒钟
-//        try {
-//            TimeUnit.SECONDS.sleep(3);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
+        //        for (ServiceInstance instance : instances) {
+//            log.info(instance.getServiceId()+"\t"+instance.getHost()+"\t"+instance.getPort());
 //        }
-//        return serverPort;
-//    }
-//
-//    @GetMapping("/dept/zipkin")
-//    public String DeptZipkin() {
-//        return "hi ,i'am Deptzipkin server fall back，welcome to atguigu，O(∩_∩)O哈哈~";
-//    }
+        return discoveryClient.getInstances(appName);
+    }
 }

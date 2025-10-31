@@ -3,31 +3,31 @@ server:
 
 spring:
   application:
-    name: cloud-zuul-service
-
+    name: cloud-gateway
   cloud:
-#    zookeeper:
-#      connect-string: 8.139.4.236:2181, 8.139.4.236:2182, 8.139.4.236:2183
-#      connectionTimeout: 20000
-#      max-retries: 10
-
+    nacos:
+      discovery:
+        server-addr: http://10.0.0.7:8848
+        group: CloudDept
+      config:
+        server-addr: http://10.0.0.7:8848
+        file-extension: yaml
+        group: CloudDept
+        import-check.enabled: false
     gateway:
-#      routes:
-#        - id: cloud-dept-service
-#          uri: lb://cloud-dept-service #  can be service name
-#          predicates:
-#            - Path=/dept/** # will be appended to uri
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
-#zuul:
-##  prefix: /fbi
-##  ignored-services: cloud-dept-service // ban the specified service
-#  routes:
-#    mydept.serviceId: cloud-dept-service
-#    mydept.path: /cloud-dept-service/**
+      routes:
+        - id: dept-provider_route
+#          uri: http://localhost:8001 # because of unknownHostException with restTemplate
+          uri: lb://dept-provider
+          predicates:
+            - Path=/dept/** # will be appended to uri
 
-# cloud-dept-service = localhost:8001
-# originally access localhost:8001/dept/list
-# with route: localhost:8977/cloud-dept-service/dept/list
+        - id: dept-consumer_route #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
+#          uri: http://localhost:81          #匹配后提供服务的路由地址
+          uri: lb://cloud-consumer-service #匹配后提供服务的路由地址
+          predicates:
+            - Path=/consumer/dept/**

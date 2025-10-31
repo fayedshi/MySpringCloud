@@ -2,9 +2,9 @@ package com.glide.springcloud.controller;
 
 import com.glide.springcloud.models.Dept;
 import com.glide.springcloud.service.DeptClientService;
-import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +22,19 @@ public class ConsumerController {
     @Autowired
     DeptClientService service;
 
+    @Value("${server.port}")
+    private String serverPort;
+
+    @GetMapping(value = "/dept/test")
+    public String test() {
+        return "From consumer "+serverPort;
+    }
+
     @RequestMapping(value = "/dept/create")
     public Boolean add(Dept dept) {
         return service.add(dept);
     }
+
 
     @GetMapping(value = "/dept/get/{id}")
     public Dept get(@PathVariable("id") Long id) {
@@ -37,7 +46,6 @@ public class ConsumerController {
         return service.list();
     }
 
-
     @GetMapping(value = "/dept/discovery")
     public Object discovery() {
         return service.discovery();
@@ -48,8 +56,4 @@ public class ConsumerController {
     public String getLB() {
         return service.getLB();
     }
-
-//    private String fallback(RequestNotPermitted requestNotPermitted) {
-//        return "Payment service does not permit further calls";
-//    }
 }
