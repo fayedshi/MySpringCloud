@@ -1,6 +1,9 @@
 server:
   port: 8977
 
+jwt:
+  secret: turnMeOn
+
 spring:
   application:
     name: cloud-gateway
@@ -21,13 +24,21 @@ spring:
           lower-case-service-id: true
       routes:
         - id: dept-provider_route
-#          uri: http://localhost:8001 # because of unknownHostException with restTemplate
-          uri: lb://dept-provider
           predicates:
-            - Path=/dept/** # will be appended to uri
+            - Path=/portal/** # will be appended to uri
+          uri: lb://dept-provider
+          filters:
+            - AuthFilterFactory
+#              args:
+#                name: "auth"
+#                order: 1
+            - RewritePath=/portal/(?<segment>/?.*), /dept/$\{segment}
 
         - id: dept-consumer_route #payment_route    #路由的ID，没有固定规则但要求唯一，建议配合服务名
-#          uri: http://localhost:81          #匹配后提供服务的路由地址
+          #          uri: http://localhost:81          #匹配后提供服务的路由地址
           uri: lb://cloud-consumer-service #匹配后提供服务的路由地址
+          filters:
+#            - name: AuthFilterFactory
+            - RewritePath=/portal/(?<segment>/?.*), /dept/$\{segment}
           predicates:
-            - Path=/consumer/dept/**
+            - Path=/consumer/portal/**
