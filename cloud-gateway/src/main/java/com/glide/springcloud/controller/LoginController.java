@@ -1,41 +1,39 @@
 package com.glide.springcloud.controller;
 
 
+import com.glide.springcloud.model.CloudUser;
+import com.glide.springcloud.service.AuthService;
 import com.glide.springcloud.util.JwtUtil;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.bouncycastle.jcajce.BCFKSLoadStoreParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
-import javax.crypto.SecretKey;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
-import io.jsonwebtoken.Claims;
-//import io.;
-//import io.jsonwebtoken.security.*;
 
 @RestController
-//@RequestMapping("/consumer")
+@RequestMapping("/api")
 public class LoginController {
 
     @Autowired
     RedisTemplate redisTemplate;
-
     @Autowired
-    JwtUtil jwtUtil;
+    AuthService authService;
 
-    //    @Operation(summary = "登录以后返回token")
-    @PostMapping(value = "/login")
-    public String login(@RequestParam String userName, @RequestParam String password) {
+    //@Operation(summary = "登录以后返回token")
+    @PostMapping(value = "/user/login")
+    public Mono<Object> login(@RequestBody CloudUser cloudUser) {
+//        System.out.print("here");
 //        String userToken = String.format("%s:%s", userName, UUID.randomUUID());
-        String userToken = jwtUtil.generateToken(new HashMap<>(), userName);
-        redisTemplate.opsForValue().set(userToken, userName, 2, TimeUnit.HOURS);
-        return userToken;
+//        String userToken = jwtUtil.generateToken(new HashMap<>(), cloudUser.getUsername());
+//        redisTemplate.opsForValue().set(userToken, cloudUser.getUsername(), 2, TimeUnit.HOURS);
+        return authService.login(cloudUser);
     }
 
-
+    @GetMapping(value = "/test")
+    public Mono<String> test() {
+        System.out.println("test");
+        return Mono.just("test");
+    }
 }

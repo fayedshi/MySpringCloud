@@ -1,13 +1,19 @@
-package com.glide.springcloud;
+//import io.jsonwebtoken.impl.TextCodec;
 
-import java.util.ArrayList;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.util.AntPathMatcher;
+import reactor.core.publisher.Mono;
+
+import javax.crypto.spec.SecretKeySpec;
 import java.util.function.*;
+//import io.jsonwebtoken.J
+
 
 public class TestFunctionInterface {
 
 
     public static void main(String[] args) {
-        System.out.println("bipred "+testBiPredicate("abc", "123", (p, q) -> !p.isEmpty() && !q.isEmpty()));
+        System.out.println("bipred " + testBiPredicate("abc", "123", (p, q) -> !p.isEmpty() && !q.isEmpty()));
         System.out.println(validate("abc", s -> !s.isEmpty(), s -> s.length() > 2));
         getString(() -> "hey");
         String[] strArray = {"张三,30", "李四,21", "王五,18"};
@@ -18,6 +24,31 @@ public class TestFunctionInterface {
         convert("test", input -> input.length() + "idea".length());
         convert("hello", input -> input + " idea", newStr -> newStr + " appended new String");
         toUpper("hello", input -> input + " idea", newStr -> newStr);
+
+        System.out.println(convert("home", (s) -> s.indexOf("o")));
+
+        new SecretKeySpec("hello".getBytes(), SignatureAlgorithm.HS256.getJcaName());
+        AntPathMatcher antPathMatcher = new AntPathMatcher();
+        System.out.println(antPathMatcher.match("/home/user/**", "/home/user/1/6/6"));
+
+
+
+        Mono.just("hello")
+                .doOnNext(str -> {
+                    System.out.println("转换前: " + str);
+                })
+                .map(String::toUpperCase)
+                .subscribe(System.out::println);
+
+        Mono<String> obj = Mono.just("test");
+        obj.subscribe(x -> System.out.println(x));
+
+
+//
+//        String pass=TextCodec.BASE64.encode("hello");
+//        byte[] bytes = TextCodec.BASE64.decode(pass);
+//        String decPass=new String(bytes);
+
     }
 
 
@@ -41,9 +72,12 @@ public class TestFunctionInterface {
         }
     }
 
-    private static void convert(String s, Function<String, Integer> fun1) {
+//    print()
+
+    // convert("home", (s)->s.indexOf("o"))
+    private static int convert(String s, Function<String, Integer> fun1) {
         int n1 = fun1.apply(s);
-        System.out.println(n1);
+        return n1;
     }
 
     private static void convert(String s, Function<String, String> fun1, Function<String, String> fun2) {

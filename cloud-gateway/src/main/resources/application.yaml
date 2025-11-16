@@ -1,12 +1,25 @@
 server:
   port: 8977
 
-jwt:
-  secret: turnMeOn
+#jwt:
+#  secret: turnMeOnturnMeOnturnMeOnturnMeOnturnMeOnturnMeOn
 
 spring:
   application:
     name: cloud-gateway
+  data:
+    redis:
+      host: 10.0.0.7 # Redis服务器地址
+      database: 0 # Redis数据库索引（默认为0）
+      port: 6379 # Redis服务器连接端口
+      password: # Redis服务器连接密码（默认为空）
+      timeout: 5000 # 连接超时时间（毫秒）
+  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://10.0.0.7:3306/test?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: root
   cloud:
     nacos:
       discovery:
@@ -28,7 +41,7 @@ spring:
             - Path=/portal/** # will be appended to uri
           uri: lb://dept-provider
           filters:
-            - AuthFilterFactory
+#            - AuthFilterFactory
 #              args:
 #                name: "auth"
 #                order: 1
