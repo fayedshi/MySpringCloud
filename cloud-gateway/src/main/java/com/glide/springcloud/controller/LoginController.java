@@ -6,6 +6,8 @@ import com.glide.springcloud.service.AuthService;
 import com.glide.springcloud.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -14,6 +16,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api")
+//@EnableMethodSecurity
 public class LoginController {
 
     @Autowired
@@ -32,8 +35,9 @@ public class LoginController {
     }
 
     @GetMapping(value = "/test")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Mono<String> test() {
-        System.out.println("test");
+//        System.out.println("test");
         return Mono.just("test");
     }
 }

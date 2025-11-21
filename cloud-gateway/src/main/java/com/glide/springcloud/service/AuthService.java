@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,6 @@ public class AuthService {
         Authentication authenticationRequest =
                 UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
         Mono<Authentication> authentication = authenticationManager.authenticate(authenticationRequest);
-//        authentication.subscribe(auth -> System.out.println(auth));
 
         return authentication.map(auth -> {
             if (auth.isAuthenticated()) {
@@ -41,11 +41,12 @@ public class AuthService {
 //                SecurityContextHolder.getContext().setAuthentication(auth);
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("principals", auth.getPrincipal());
-                claims.put("credentials",auth.getCredentials());
-                claims.put("roles", auth.getAuthorities());
+                claims.put("credentials", auth.getCredentials());
+                claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
-                return jwtToken;
+                return Map.of("principal", auth.getPrincipal(), "token", jwtToken);
+//                return jwtToken;
             }
             return Map.of("principal", auth.getPrincipal(),
                     "code", 200, "message", "authentication failure");

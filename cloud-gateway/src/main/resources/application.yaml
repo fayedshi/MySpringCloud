@@ -1,8 +1,17 @@
 server:
   port: 8977
 
+logging:
+  level:
+#    root: DEBUG
+#    org.springframework: DEBUG
+    org.springframework.security: DEBUG
+
 #jwt:
 #  secret: turnMeOnturnMeOnturnMeOnturnMeOnturnMeOnturnMeOn
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
 
 spring:
   application:
