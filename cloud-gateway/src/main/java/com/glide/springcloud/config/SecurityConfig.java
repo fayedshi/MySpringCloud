@@ -1,6 +1,8 @@
 package com.glide.springcloud.config;
 
+import com.glide.springcloud.filter.CORSFilter;
 import com.glide.springcloud.filter.CustomJWTFilter;
+import com.glide.springcloud.util.ResponseWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,8 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
 
 import java.util.Map;
@@ -30,6 +34,9 @@ public class SecurityConfig {
     @Autowired
     CustomAuthEntrypoint customAuthEntrypoint;
 
+    @Autowired
+    UrlBasedCorsConfigurationSource corsConfigurationSource;
+
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange((authorize) -> authorize // 这里只是应用在AuthorizationWebFilter，然后通过DelegatingReactiveAuthorizationManager去查权限，
@@ -44,17 +51,13 @@ public class SecurityConfig {
                 ).securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .csrf(csrf -> csrf.disable())
+                .cors(corsSpec -> new CorsWebFilter(corsConfigurationSource))
                 .httpBasic(httpBasicSpec -> httpBasicSpec.disable())
                 .exceptionHandling(exception -> {
                     exception.authenticationEntryPoint(customAuthEntrypoint);
-                    exception.accessDeniedHandler((exchange, deniedException) -> {
-                        exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
-                        DataBufferFactory dataBufferFactory = exchange.getResponse().bufferFactory();
-                        Map<String, String> resMap = Map.of("Message", deniedException.getMessage(),
-                                "Code", HttpStatus.FORBIDDEN.toString());
-                        DataBuffer dataBuffer = dataBufferFactory.wrap(resMap.toString().getBytes());
-                        return exchange.getResponse().writeWith(Mono.just(dataBuffer));
-                    });
+                    exception.accessDeniedHandler((exchange, deniedException) ->
+                            exchange.getResponse().writeWith(Mono.just(ResponseWriter.write(exchange,
+                                    HttpStatus.FORBIDDEN, deniedException.getMessage()))));
                 })
                 .authenticationManager(authenticationManager())
                 .addFilterBefore(new CustomJWTFilter(), SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);

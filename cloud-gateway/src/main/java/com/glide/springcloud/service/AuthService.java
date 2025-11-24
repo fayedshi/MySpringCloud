@@ -8,10 +8,11 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,24 +20,20 @@ import java.util.Map;
 @Service
 public class AuthService {
 
+    //    private static final Log log = LoggerFactory.getLogger(AuthService.class);
+    private static final Log logger = LogFactory.getLog(AuthService.class);
     @Autowired
     ReactiveAuthenticationManager authenticationManager;
 
     @Autowired
     RedisTemplate redisTemplate;
 
-//    @Autowired
-//    JwtUtil jwtUtil;
-
     public Mono<Object> login(CloudUser cloudUser) {
-
-
-        Authentication authenticationRequest =
-                UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
-        Mono<Authentication> authentication = authenticationManager.authenticate(authenticationRequest);
-
-        return authentication.map(auth -> {
-            if (auth.isAuthenticated()) {
+        Authentication authToken = UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
+        try {
+            Mono<Authentication> authentication = authenticationManager.authenticate(authToken);
+            return authentication.map(auth -> {
+//                if (auth.isAuthenticated()) {
                 // reached controller, means no more filters to meet, thereby no need to set security context
 //                SecurityContextHolder.getContext().setAuthentication(auth);
                 Map<String, Object> claims = new HashMap<>();
@@ -46,10 +43,11 @@ public class AuthService {
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
                 return Map.of("principal", auth.getPrincipal(), "token", jwtToken);
-//                return jwtToken;
-            }
-            return Map.of("principal", auth.getPrincipal(),
-                    "code", 200, "message", "authentication failure");
-        });
+            });
+        } catch (Exception e) {
+            logger.error("User not found " + e.getMessage());
+            return Mono.just(Map.of("Code", -1, "Message", e.getMessage()));
+//            return Mono.error(e);
+        }
     }
 }

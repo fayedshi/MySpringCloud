@@ -1,10 +1,12 @@
 package com.glide.springcloud.filter;
 
 import com.glide.springcloud.util.JwtUtil;
+import com.glide.springcloud.util.ResponseWriter;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,27 +27,24 @@ import java.util.List;
 public class CustomJWTFilter implements WebFilter {
     @Autowired
     RedisTemplate redisTemplate;
+    final String authHeader = "Authorization";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        if (exchange.getRequest().getPath().value().equals("/api/user/login")) {
-            return chain.filter(exchange);
-        }
-        final String authHeader = "Authorization";
         String jwtToken = exchange.getRequest().getHeaders().getFirst(authHeader);
-        if (jwtToken == null) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            exchange.getResponse().getHeaders().add("error", "Not authenticated");
+        if (jwtToken == null || jwtToken.isEmpty()) {
+            // let it pass to next filter to process
             return chain.filter(exchange);
         }
-
-        Claims claims = JwtUtil.validateToken(jwtToken);
-        if (claims == null) {
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return chain.filter(exchange);
+        Claims claims;
+        try {
+            claims = JwtUtil.validateToken(jwtToken);
+            if (claims == null) {
+                return chain.filter(exchange);
+            }
+        } catch (Exception e) {
+            return exchange.getResponse().writeWith(Mono.just(ResponseWriter.write(exchange, HttpStatus.INTERNAL_SERVER_ERROR, "Token validation failed: " + e.getMessage())));
         }
-        // todo: get authorities from claims
-//                        claims.get("roles");
         List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
         Authentication auth = UsernamePasswordAuthenticationToken.authenticated(claims.get("principals"),
                 claims.get("credentials"), authorities);

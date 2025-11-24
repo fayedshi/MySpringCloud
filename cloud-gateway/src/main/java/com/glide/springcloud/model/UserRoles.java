@@ -24,4 +24,9 @@ public class UserRoles {
     private Integer id;
     private Integer userId;
     private Integer roleId;
+
+    public UserRoles(int userId, int roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
 }
