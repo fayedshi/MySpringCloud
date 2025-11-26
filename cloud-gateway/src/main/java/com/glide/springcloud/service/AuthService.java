@@ -33,7 +33,6 @@ public class AuthService {
         try {
             Mono<Authentication> authentication = authenticationManager.authenticate(authToken);
             return authentication.map(auth -> {
-//                if (auth.isAuthenticated()) {
                 // reached controller, means no more filters to meet, thereby no need to set security context
 //                SecurityContextHolder.getContext().setAuthentication(auth);
                 Map<String, Object> claims = new HashMap<>();
@@ -42,7 +41,7 @@ public class AuthService {
                 claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
-                return Map.of("principal", auth.getPrincipal(), "token", jwtToken);
+                return Map.of("username", auth.getName(), "authorities", auth.getAuthorities(), "token", jwtToken);
             });
         } catch (Exception e) {
             logger.error("User not found " + e.getMessage());
