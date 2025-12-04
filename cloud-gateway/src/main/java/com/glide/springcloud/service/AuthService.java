@@ -41,11 +41,12 @@ public class AuthService {
                 claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
-                return Map.of("username", auth.getName(), "authorities", auth.getAuthorities(), "token", jwtToken);
+                return Map.of("code", 200,
+                        "username", auth.getName(), "authorities", auth.getAuthorities(), "token", jwtToken);
             });
         } catch (Exception e) {
             logger.error("User not found " + e.getMessage());
-            return Mono.just(Map.of("Code", -1, "Message", e.getMessage()));
+            return Mono.just(Map.of("code", -1, "message", e.getMessage()));
 //            return Mono.error(e);
         }
     }
