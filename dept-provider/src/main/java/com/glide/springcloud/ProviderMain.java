@@ -10,8 +10,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ProviderMain8001 {
+public class ProviderMain {
     public static void main(String[] args) {
-        SpringApplication.run(ProviderMain8001.class, args);
+        SpringApplication.run(ProviderMain.class, args);
     }
 }

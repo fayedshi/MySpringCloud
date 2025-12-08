@@ -8,12 +8,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>common-api</module>
-        <module>dept-provider-8001</module>
+        <module>dept-provider</module>
         <module>dept-consumer-80</module>
         <module>dept-consumer-feign</module>
         <module>cloud-gateway</module>
-        <module>cloud-stream-rabbitmq-provider8801</module>
-        <module>cloud-stream-rabbitmq-consumer8802</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->

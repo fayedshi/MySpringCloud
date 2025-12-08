@@ -9,7 +9,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @Service
 public class RabbitConsumer {
@@ -20,7 +19,7 @@ public class RabbitConsumer {
 //        System.out.println("received from normal queue: " + message);
 //        channel.basicConsume()
 //        channel.basicAck(deliveryTag, false);
-        logger.info(String.format(" %s Received message: %s, deliveryTag: %d \n", LocalDateTime.now(),
+        logger.info(String.format("Received message: %s, deliveryTag: %d \n",
                 new String(message.getBody()), message.getMessageProperties().getDeliveryTag()));
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
     }
