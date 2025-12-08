@@ -2,6 +2,7 @@ import com.glide.springcloud.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,5 +22,11 @@ public class JwtTest {
         assertEquals(claim.getSubject(), "allen");
         assertEquals(claim.get("role"), "admin");
 
+    }
+
+    @Test
+    void testString()
+    {
+        System.out.printf("[dl.queue] %s Received message: , deliveryTag:", LocalDateTime.now());
     }
 }

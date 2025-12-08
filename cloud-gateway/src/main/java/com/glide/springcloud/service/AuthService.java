@@ -1,5 +1,6 @@
 package com.glide.springcloud.service;
 
+import com.glide.springcloud.config.RabbitConfig;
 import com.glide.springcloud.model.CloudUser;
 import com.glide.springcloud.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,13 @@ public class AuthService {
     @Autowired
     ReactiveAuthenticationManager authenticationManager;
 
+    //todo: redis version not compatible, fix later
     @Autowired
     RedisTemplate redisTemplate;
+
+    @Autowired
+    RabbitProducer rabbitProducer;
+
 
     public Mono<Object> login(CloudUser cloudUser) {
         Authentication authToken = UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
@@ -40,6 +46,7 @@ public class AuthService {
                 claims.put("credentials", auth.getCredentials());
                 claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
+                sendMessage(auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
                 return Map.of("code", 200,
                         "username", auth.getName(), "authorities", auth.getAuthorities(), "token", jwtToken);
@@ -47,7 +54,10 @@ public class AuthService {
         } catch (Exception e) {
             logger.error("User not found " + e.getMessage());
             return Mono.just(Map.of("code", -1, "message", e.getMessage()));
-//            return Mono.error(e);
         }
+    }
+
+    private void sendMessage(String userName) {
+        new Thread(() -> rabbitProducer.sendMessage(String.format("User %s logged in.", userName), RabbitConfig.ROUTING_KEY_LOGIN, 5000)).start();
     }
 }
