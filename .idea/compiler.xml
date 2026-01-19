@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="common-api" />
+        <module name="dept-consumer-80" />
+        <module name="dept-consumer-feign" />
+        <module name="dept-provider" />
+        <module name="cloud-gateway" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="17">
+      <module name="cloud-stream-rabbitmq-consumer8802" target="17" />
+      <module name="cloud-stream-rabbitmq-provider8801" target="17" />
+      <module name="dept-provider-8001" target="17" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

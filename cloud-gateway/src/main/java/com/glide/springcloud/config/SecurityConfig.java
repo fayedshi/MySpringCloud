@@ -36,12 +36,12 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange((authorize) -> authorize // 这里只是应用在AuthorizationWebFilter，然后通过DelegatingReactiveAuthorizationManager去查权限，
                         // 跟新加的filter无关，所有的filter都会经过， 不管path是否permitAll
-                        .pathMatchers("/dept/list").hasRole("ADMIN")
-                        .pathMatchers("/dept/get/**").hasRole("USER")
-                        .pathMatchers("/api/test").hasRole("USER")
+                        .pathMatchers("/portal/list").hasRole("ADMIN")
+                        .pathMatchers("/portal/get/**").hasRole("USER")
+                        .pathMatchers("/api/test").hasRole("ADMIN")
                         .pathMatchers("/api/user/login").permitAll()
                         .pathMatchers("/api/user/register").permitAll()
-                        //剩下的所有请求都需要认证
+                        //need authenticated for rest resource
                         .anyExchange().authenticated()
                 ).securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)

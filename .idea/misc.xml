@@ -1,0 +1,21 @@
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/dept-provider-8001/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/cloud-stream-rabbitmq-consumer8802/pom.xml" />
+        <option value="$PROJECT_DIR$/cloud-stream-rabbitmq-provider8801/pom.xml" />
+        <option value="$PROJECT_DIR$/dept-provider-8001/pom.xml" />
+        <option value="$PROJECT_DIR$/dept-provider-8002/pom.xml" />
+        <option value="$PROJECT_DIR$/dept-provider-hystrix-8003/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="17" project-jdk-type="JavaSDK" />
+</project>

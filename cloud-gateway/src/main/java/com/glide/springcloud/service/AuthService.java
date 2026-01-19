@@ -9,7 +9,6 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import org.apache.commons.logging.Log;
@@ -34,7 +33,7 @@ public class AuthService {
     RabbitProducer rabbitProducer;
 
 
-    public Mono<Object> login(CloudUser cloudUser) {
+    public Mono<Map<String, Object>> login(CloudUser cloudUser) {
         Authentication authToken = UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
         try {
             Mono<Authentication> authentication = authenticationManager.authenticate(authToken);
@@ -43,14 +42,16 @@ public class AuthService {
 //                SecurityContextHolder.getContext().setAuthentication(auth);
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("principals", auth.getPrincipal());
-                claims.put("credentials", auth.getCredentials());
+                // leave credentials null for creating the token
+//                claims.put("credentials", auth.getCredentials());
                 claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
                 String jwtToken = JwtUtil.generateToken(claims, auth.getName());
                 sendMessage(auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
                 return Map.of("code", 200,
                         "username", auth.getName(), "authorities", auth.getAuthorities(), "token", jwtToken);
-            });
+            }).onErrorResume(throwable ->
+                    Mono.just(Map.of("code", -1, "message", throwable.getMessage())));
         } catch (Exception e) {
             logger.error("User not found " + e.getMessage());
             return Mono.just(Map.of("code", -1, "message", e.getMessage()));

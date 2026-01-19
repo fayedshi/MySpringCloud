@@ -47,7 +47,7 @@ public class CustomJWTFilter implements WebFilter {
         }
         List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
         Authentication auth = UsernamePasswordAuthenticationToken.authenticated(claims.get("principals"),
-                claims.get("credentials"), authorities);
+                claims.get("credentials"), authorities); // get null passwords as no pass in token generation which is safe
         // security context will be used by rest filters
         SecurityContextHolder.getContext().setAuthentication(auth); // for @EnableMethodSecurity
 

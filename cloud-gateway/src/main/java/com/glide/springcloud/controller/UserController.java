@@ -27,8 +27,7 @@ public class UserController {
 
     //@Operation(summary = "登录以后返回token")
     @PostMapping(value = "/user/login")
-    public Mono<Object> login(@RequestBody CloudUser cloudUser) {
-//        redisTemplate.opsForValue().set(userToken, cloudUser.getUsername(), 2, TimeUnit.HOURS);
+    public Mono<Map<String, Object>> login(@RequestBody CloudUser cloudUser) {
         return authService.login(cloudUser);
     }
 
@@ -38,9 +37,8 @@ public class UserController {
     }
 
     @GetMapping(value = "/test")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('USER')")
     public Mono<String> test() {
-//        System.out.println("test");
         return Mono.just("test");
     }
 }
