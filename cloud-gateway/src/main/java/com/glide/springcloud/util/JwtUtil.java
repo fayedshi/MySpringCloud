@@ -37,16 +37,10 @@ public class JwtUtil {
 
     // invoked by gateway filter
     public static Claims validateToken(String token) {
-        try {
-//            SecretKeySpec secretKeySpec=new SecretKeySpec(secret.getBytes(), SignatureAlgorithm.HS256.getJcaName());
-
-            return Jwts.parser()
-                    .setSigningKey(secret)
-                    .build().
-                    parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            throw e;
-        }
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .build().
+                parseClaimsJws(token)
+                .getBody();
     }
 }
