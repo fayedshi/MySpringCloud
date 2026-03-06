@@ -1,6 +1,7 @@
 package com.glide.springcloud.config;
 
 import com.glide.springcloud.filter.CustomJWTFilter;
+import com.glide.springcloud.service.CustomUserDetailsService;
 import com.glide.springcloud.util.ResponseWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

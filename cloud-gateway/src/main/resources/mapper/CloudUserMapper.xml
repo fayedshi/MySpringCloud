@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.glide.springcloud.mapper.CloudUserMapper">
+    <resultMap id="cloudUserWithAuthMap" type="com.glide.springcloud.model.CloudUser">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="accountNonLocked" column="account_non_locked"/>
+        <result property="accountNonExpired" column="account_non_expired"/>
+        <result property="credentialsNonExpired" column="credentials_non_expired"/>
+        <result property="isEnabled" column="is_enabled"/>
+
+        <!-- collection 映射 -->
+        <collection property="authorities" ofType="com.glide.springcloud.model.Roles">
+            <!-- column如role_id,role_name等需跟sql中的别名保持一致-->
+            <id property="id" column="role_id"/>
+            <result property="name" column="role_name"/>
+            <result property="description" column="role_description"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectUserWithAuth" resultMap="cloudUserWithAuthMap">
+        <!--        SELECT u.id as user_id, u.username, a.id as auth_id, a.name as auth_name-->
+        <!--        FROM sys_user u-->
+        <!--        LEFT JOIN sys_user_authority a ON u.id = a.user_id-->
+        <!--        WHERE u.id = #{id}-->
+
+        SELECT
+        -- 用户表字段 (使用 u 前缀)
+        u.id AS id,
+        u.username,
+        u.password,
+        u.account_non_locked,
+        u.account_non_expired,
+        u.credentials_non_expired,
+        u.is_enabled,
+
+        -- 角色表字段 (使用 r 前缀，并为冲突字段起别名)
+        r.id AS role_id,
+        r.name AS role_name,
+        r.description AS role_description
+        FROM cloud_user u
+        LEFT JOIN user_roles ur ON u.id = ur.user_id -- 假设存在中间表
+        LEFT JOIN roles r ON ur.role_id = r.id -- 连接角色表
+        WHERE u.username = #{username}
+    </select>
+</mapper>

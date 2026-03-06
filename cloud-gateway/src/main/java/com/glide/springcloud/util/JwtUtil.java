@@ -30,7 +30,7 @@ public class JwtUtil {
                 .subject(subject) // user name
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .id(UUID.randomUUID().toString())// 设置一个随机生成的唯一标识符。
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 48)) // 10小时
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 48)) // 48小时
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }

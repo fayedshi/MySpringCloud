@@ -12,6 +12,7 @@ logging:
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
+  mapperLocations: classpath:mapper/*.xml
 
 spring:
   application:

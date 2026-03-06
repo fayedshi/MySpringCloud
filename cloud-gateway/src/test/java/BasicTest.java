@@ -23,11 +23,20 @@ import java.util.random.RandomGeneratorFactory;
 
 public class BasicTest {
 
+
+    interface icar {
+        String transport(int num);
+    }
+
+    icar truck = (num) -> "to transport " + num + " goods";
+
+
     @Test
     void testPasscode() {
         System.out.println(new BCryptPasswordEncoder().encode("123"));
 //        "$2a$10$aEXnwKPgl77z0oHF5QvkSunUVyCVbDnJl4k1dCK.xdZbsEMIx1vsi"
 //        $2a$10$n.H7KycDmApVzDtSY82ZCeiZWxaFBVm/NImxmvPDlDqWou2CtnxQm
+        System.out.println(truck.transport(5));
     }
 
     @Test
@@ -268,14 +277,15 @@ public class BasicTest {
     }
 
     @Test
-    void testRetryWhen(){
+    void testRetryWhen() {
         Flux<String> flux = Flux
                 .<String>error(new IllegalArgumentException())
-                .doOnError(System.out::println).onErrorMap(a->new RuntimeException("error happened"))
+                .doOnError(System.out::println).onErrorMap(a -> new RuntimeException("error happened"))
                 .retryWhen(Retry.from(companion ->
                         companion.take(3)));
         flux.subscribe(System.out::println);
     }
+
 
 }
 

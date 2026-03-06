@@ -2,8 +2,8 @@ package com.glide.springcloud.controller;
 
 
 import com.glide.springcloud.model.CloudUser;
-import com.glide.springcloud.service.AuthService;
-import com.glide.springcloud.service.UserService;
+import com.glide.springcloud.service.LoginService;
+import com.glide.springcloud.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +21,9 @@ public class UserController {
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
-    AuthService authService;
+    LoginService authService;
     @Autowired
-    UserService userService;
+    RegisterService userService;
 
     //@Operation(summary = "登录以后返回token")
     @PostMapping(value = "/user/login")
@@ -37,7 +37,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/test")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('GUEST')")
     public Mono<String> test() {
         return Mono.just("test");
     }

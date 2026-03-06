@@ -22,7 +22,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+/*
+custom filter for authentication carried when visiting target service
+ */
 @Component
 public class CustomJWTFilter implements WebFilter {
     @Autowired
@@ -45,9 +49,10 @@ public class CustomJWTFilter implements WebFilter {
         } catch (Exception e) {
             return exchange.getResponse().writeWith(Mono.just(ResponseWriter.write(exchange, HttpStatus.INTERNAL_SERVER_ERROR, "Token validation failed: " + e.getMessage())));
         }
-        List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
+//        List<SimpleGrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).toList();
+        List<GrantedAuthority> authorities = ((List<String>) claims.get("roles")).stream().map(role -> (GrantedAuthority) () -> "ROLE_" + role).toList();
         Authentication auth = UsernamePasswordAuthenticationToken.authenticated(claims.get("principals"),
-                claims.get("credentials"), authorities); // get null passwords as no pass in token generation which is safe
+                claims.get("credentials"), authorities); // get null credentials as no pass in token generation which is safe
         // security context will be used by rest filters
         SecurityContextHolder.getContext().setAuthentication(auth); // for @EnableMethodSecurity
 

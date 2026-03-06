@@ -18,10 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class AuthService {
+public class LoginService {
 
-    //    private static final Log log = LoggerFactory.getLogger(AuthService.class);
-    private static final Log logger = LogFactory.getLog(AuthService.class);
+    private static final Log logger = LogFactory.getLog(LoginService.class);
     @Autowired
     ReactiveAuthenticationManager authenticationManager;
 
@@ -32,11 +31,10 @@ public class AuthService {
     @Autowired
     RabbitProducer rabbitProducer;
 
-
     public Mono<Map<String, Object>> login(CloudUser cloudUser) {
-        Authentication authToken = UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPasswd());
+        Authentication authToken = UsernamePasswordAuthenticationToken.unauthenticated(cloudUser.getUsername(), cloudUser.getPassword());
         try {
-            Mono<Authentication> authentication = authenticationManager.authenticate(authToken);
+            Mono<Authentication> authentication = authenticationManager.authenticate(authToken); // go to retrieveUser()->CustomUserDetailService
             return authentication.map(auth -> {
                 // reached controller, means no more filters to meet, thereby no need to set security context
 //                SecurityContextHolder.getContext().setAuthentication(auth);

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Created on 2020/8/24 10:57 上午
@@ -19,10 +20,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("roles")
-public class Roles {
+public class Roles implements GrantedAuthority {
     @TableId(type = IdType.AUTO)
     private Integer id;
     private String name;
     private String description;
 
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }

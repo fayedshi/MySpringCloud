@@ -1,9 +1,16 @@
+CREATE TABLE `cloud_user` (
+    `id`           BIGINT AUTO_INCREMENT COMMENT '主键ID',
+    `username`     VARCHAR(50)  NOT NULL COMMENT '用户名',
+    `password`     VARCHAR(255) NOT NULL COMMENT '加密后的密码',
+    `account_non_expired`   TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '账号是否过期 (1-过期, 0-未过期)',
+    `account_non_locked`    TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '账号是否锁定 (1-锁定, 0-未锁定)',
+    `credentials_non_expired` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '凭证是否过期 (1-过期, 0-未过期)',
+    `is_enabled`   TINYINT(1)   NOT NULL DEFAULT 1 COMMENT '是否启用 (1-启用, 0-禁用)',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 
-CREATE TABLE cloud_user(
-id integer primary key auto_increment,
-username varchar(20),
-passwd varchar(20)
-)
+
 
 CREATE  TABLE roles (
  id  INT  NOT  NULL  AUTO_INCREMENT,

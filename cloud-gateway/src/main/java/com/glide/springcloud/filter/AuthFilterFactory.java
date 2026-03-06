@@ -4,7 +4,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.stereotype.Component;
 
-
+// not needed the moment
 @Component
 public class AuthFilterFactory extends AbstractGatewayFilterFactory {
     @Override
