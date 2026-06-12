@@ -4,15 +4,13 @@ import com.glide.springcloud.util.JwtUtil;
 import com.glide.springcloud.util.ResponseWriter;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -20,9 +18,7 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /*
 custom filter for authentication carried when visiting target service
@@ -33,6 +29,9 @@ public class CustomJWTFilter implements WebFilter {
     RedisTemplate redisTemplate;
     final String authHeader = "Authorization";
 
+    @Value("${jwt.secret}")
+    String secret;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String jwtToken = exchange.getRequest().getHeaders().getFirst(authHeader);
@@ -42,7 +41,7 @@ public class CustomJWTFilter implements WebFilter {
         }
         Claims claims;
         try {
-            claims = JwtUtil.validateToken(jwtToken);
+            claims = JwtUtil.validateToken(jwtToken, secret);
             if (claims == null) {
                 return chain.filter(exchange);
             }

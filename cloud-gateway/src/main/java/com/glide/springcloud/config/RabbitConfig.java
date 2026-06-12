@@ -10,9 +10,11 @@ public class RabbitConfig {
     public static final String QUEUE_NORMAL = "queueNormal";
     public static final String QUEUE_SMS = "queueSms";
     public static final String QUEUE_DL = "dlq";
+
     public static final String EXCHANGE_NORMAL = "normalx";
     public static final String EXCHANGE_DL = "dlx";
     //    public static final String ROUTING_KEY_DL = "Registration";
+
     // normal binding and dlx binding share same routing key
     public static final String ROUTING_KEY_NORMAL = "normal";
     public static final String ROUTING_KEY_DL = "dl";

@@ -1,46 +1,44 @@
 package com.glide.springcloud.util;
 
-
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.core.annotation.Order;
+import io.jsonwebtoken.security.Keys;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
 import io.jsonwebtoken.Jwts;
-import org.springframework.stereotype.Service;
+
+import javax.crypto.spec.SecretKeySpec;
 
 public class JwtUtil {
-
-    //    @Value("${jwt.secret}")
-    private static final String secret = "turnMeOnturnMeOnturnMeOnturnMeOnturnMeOnturnMeOn";
 
     /**
      * @param claims
      * @param subject
      * @return
      */
-    public static String generateToken(Map<String, Object> claims, String subject) {
-
+    public static String generateToken(Map<String, Object> claims, String subject, String secret) {
+//        System.out.println(secret.getBytes(StandardCharsets.UTF_8).length);
         return Jwts.builder()
-                .setHeaderParam("typ", "JWT")
+                .header().add("typ", "JWT").and()
                 .claims(claims)
                 .subject(subject) // user name
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .id(UUID.randomUUID().toString())// 设置一个随机生成的唯一标识符。
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 48)) // 48小时
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .signWith(Keys.hmacShaKeyFor(secret.getBytes()))
                 .compact();
     }
 
-    // invoked by gateway filter
-    public static Claims validateToken(String token) {
+    // invoked by CustomJwtFilter
+    public static Claims validateToken(String token, String secret) {
+        SecretKeySpec secretKey = new SecretKeySpec(secret.getBytes(), "HmacSHA256");
         return Jwts.parser()
-                .setSigningKey(secret)
-                .build().
-                parseClaimsJws(token)
-                .getBody();
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

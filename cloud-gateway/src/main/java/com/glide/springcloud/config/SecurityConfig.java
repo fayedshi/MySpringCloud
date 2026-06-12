@@ -33,6 +33,9 @@ public class SecurityConfig {
     @Autowired
     UrlBasedCorsConfigurationSource corsConfigurationSource;
 
+    @Autowired
+    CustomJWTFilter customJWTFilter;
+
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange((authorize) -> authorize // 这里只是应用在AuthorizationWebFilter，然后通过DelegatingReactiveAuthorizationManager去查权限，
@@ -56,7 +59,7 @@ public class SecurityConfig {
                                     HttpStatus.FORBIDDEN, deniedException.getMessage()))));
                 })
                 .authenticationManager(authenticationManager())
-                .addFilterBefore(new CustomJWTFilter(), SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
+                .addFilterBefore(customJWTFilter, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
         return http.build();
     }
 

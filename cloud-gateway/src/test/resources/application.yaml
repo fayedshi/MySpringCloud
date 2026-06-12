@@ -1,0 +1,17 @@
+jwt:
+  secret: anykeyanykeyanykeyanykeyanykeyanykeyanykey
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    inetutils:
+      preferred-networks: 127.0.0.1
+    nacos:
+      discovery:
+        server-addr: http://10.0.0.15:8848
+        group: CloudDept
+      config:
+        server-addr: http://10.0.0.15:8848
+        file-extension: yaml
+        group: CloudDept
+        import-check.enabled: false

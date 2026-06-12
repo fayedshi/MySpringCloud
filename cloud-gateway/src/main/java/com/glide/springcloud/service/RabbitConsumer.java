@@ -19,9 +19,14 @@ public class RabbitConsumer {
 //        System.out.println("received from normal queue: " + message);
 //        channel.basicConsume()
 //        channel.basicAck(deliveryTag, false);
-        logger.info(String.format("Received message: %s, deliveryTag: %d \n",
-                new String(message.getBody()), message.getMessageProperties().getDeliveryTag()));
-        channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        try {
+            logger.info(String.format("Received message: %s, deliveryTag: %d \n",
+                    new String(message.getBody()), message.getMessageProperties().getDeliveryTag()));
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (Exception e) {
+            // args: deliveryTag, multiple messages, requeue false will transfer the message to DLQ bound to QUEUE_NORMAL
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, false);
+        }
     }
 
 

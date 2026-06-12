@@ -1,6 +1,5 @@
 package com.glide.springcloud.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.glide.springcloud.config.RabbitConfig;
 import com.glide.springcloud.mapper.CloudUserMapper;
 import com.glide.springcloud.mapper.UserRolesMapper;
@@ -11,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -50,6 +48,7 @@ public class RegisterService {
         }
     }
 
+    // send registration message to normal que with ttl, after expired, the message will be transferred to  DLQ
     private void sendMessage(String userName) {
         CompletableFuture.runAsync(() -> rabbitProducer
                         .sendMessage(String.format("User %s is registered.", userName), RabbitConfig.ROUTING_KEY_NORMAL, 8000))

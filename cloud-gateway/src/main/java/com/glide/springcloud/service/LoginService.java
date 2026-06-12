@@ -4,6 +4,7 @@ import com.glide.springcloud.config.RabbitConfig;
 import com.glide.springcloud.model.CloudUser;
 import com.glide.springcloud.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +29,9 @@ public class LoginService {
     @Autowired
     RedisTemplate redisTemplate;
 
+    @Value("${jwt.secret}")
+    String secret;
+
     @Autowired
     RabbitProducer rabbitProducer;
 
@@ -37,13 +41,10 @@ public class LoginService {
             Mono<Authentication> authentication = authenticationManager.authenticate(authToken); // go to retrieveUser()->CustomUserDetailService
             return authentication.map(auth -> {
                 // reached controller, means no more filters to meet, thereby no need to set security context
-//                SecurityContextHolder.getContext().setAuthentication(auth);
                 Map<String, Object> claims = new HashMap<>();
                 claims.put("principals", auth.getPrincipal());
-                // leave credentials null for creating the token
-//                claims.put("credentials", auth.getCredentials());
                 claims.put("roles", auth.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
-                String jwtToken = JwtUtil.generateToken(claims, auth.getName());
+                String jwtToken = JwtUtil.generateToken(claims, auth.getName(), this.secret);
                 sendMessage(auth.getName());
 //                redisTemplate.opsForValue().set(jwtToken, auth);
                 return Map.of("code", 200,
